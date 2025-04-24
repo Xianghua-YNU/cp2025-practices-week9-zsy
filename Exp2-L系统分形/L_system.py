@@ -88,7 +88,7 @@ if __name__ == "__main__":
     学生可根据下方示例，调整参数体验不同分形效果
     """
     # 1. 生成并绘制科赫曲线
-    axiom = "F"  # 公理
+axiom = "F"  # 公理
 rules = {"F": "F+F--F+F"}  # 规则
 iterations = 3  # 迭代次数
 angle_deg = 60  # 每次转向角度
