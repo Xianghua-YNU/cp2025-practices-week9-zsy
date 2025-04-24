@@ -65,7 +65,7 @@ def draw_l_system(instructions, angle, step, start_pos=(0,0), start_angle=0, sav
             stack.append((x, y, current_angle))
             current_angle += angle_deg  
         elif char == ']':
-            ）
+           
             x, y, current_angle = stack.pop()
             current_angle -= angle_deg  
     
