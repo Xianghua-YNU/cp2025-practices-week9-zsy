@@ -19,21 +19,22 @@ def koch_generator(u, level):
         return u
     
     α = np.pi/3 
-    for _ in range(level):
-        new_u = []
-        for i in range(len(u)-1):
-            a = u[i]
-            b = u[i+1]
-            
+    current_points = u.copy()
+    for i in range(len(current_points) - 1):
+            a = current_points[i]
+            b = current_points[i + 1]
+    
             p1 = a
-            p2 = a + (b - a)/3
-            p3 = p2 + (b - a)/3 * np.exp(1j*α)
-            p4 = a + 2*(b - a)/3
+            p2 = a + (b - a) / 3
+            p3 = p2 + (b - a) / 3 * np.exp(1j * alpha)
+            p4 = p3 + (b - a) / 3
             p5 = b
-            
-            new_u.extend([p1, p2, p3, p4, p5])
+
+            new_points.extend([p1, p2, p3, p4, p5])
         
-        u = np.array(new_u)
+        current_points = np.array(new_points)
+    
+    return current_points
         
 def minkowski_generator(u, level):
     """
@@ -49,29 +50,33 @@ def minkowski_generator(u, level):
     # TODO: 实现闵可夫斯基香肠曲线生成算法
     u = np.array([0, 1]) 
     
-    α = np.pi/2 
+   if level <= 0:
+        return u
+    
+    alpha = np.pi / 2 
+
+    current_points = u.copy() 
+
     for _ in range(level):
-        new_u = []
-        for i in range(len(u)-1):
-            a = u[i]
-            b = u[i+1]
+        new_points = []
+        for i in range(len(current_points) - 1):
+            a = current_points[i]
+            b = current_points[i + 1]
             
             p1 = a
-            p2 = a + (b - a)/4
-            p3 = p2 + (b - a)/4 * np.exp(1j*α)
-            p4 = p2 + (b - a)/4 * (1 + 1j)
-            p5 = a + (b - a)/2 + (b - a)/4 * 1j
-            p6 = a + (b - a)/2
-            p7 = a + (b - a)/2 - (b - a)/4 * 1j
+            p2 = a + (b - a) / 4
+            p3 = p2 + (b - a) / 4 * np.exp(1j * alpha)
+            p4 = p3 + (b - a) / 4 * (1 + 1j)
+            p5 = a + (b - a) / 2 + (b - a) / 4 * 1j
+            p6 = a + (b - a) / 2
+            p7 = a + (b - a) / 2 - (b - a) / 4 * 1j
             p8 = a + 3*(b - a)/4 - (b - a)/4 * 1j
             p9 = a + 3*(b - a)/4
             p10 = b
-            
-            new_u.extend([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10])
+
+            new_points.extend([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10])
         
-        u = np.array(new_u)
-    
-    return u
+        current_points = np.array(new_points)
 
 
 if __name__ == "__main__":
