@@ -13,7 +13,7 @@ def koch_generator(u, level):
         numpy.ndarray: 生成的所有点（复数数组）
     """
     # TODO: 实现科赫曲线生成算法
-    f level == 0:
+    if level == 0:
         return u
     else:
         a = u[0]
