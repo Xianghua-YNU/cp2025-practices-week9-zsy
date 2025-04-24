@@ -20,17 +20,17 @@ def generate_mandelbrot(width=800, height=800, max_iter=100):
     4. 迭代计算逃逸时间
     """
     # TODO: 创建x和y的线性空间
-    x = np.linspace(-2.0, 1.0, width)  # x轴范围
-    y = np.linspace(-1.5, 1.5, height)  # y轴范围
+    x = np.linspace(-2.0, 1.0, width)  
+    y = np.linspace(-1.5, 1.5, height)  
     # TODO: 使用np.meshgrid生成网格
     # TODO: 构建复数矩阵C = x + iy
     C = x[:, np.newaxis] + y[np.newaxis, :] * 1j
 
     
     # TODO: 初始化记录数组
-    # B = np.zeros(...)  # 记录迭代次数
-    # Z = np.zeros(...)  # 初始值设为0
-    B = np.zeros(C.shape, dtype=int)  # 记录迭代次数
+    # B = np.zeros(...)  
+    # Z = np.zeros(...)  
+    B = np.zeros(C.shape, dtype=int)  
     Z = np.zeros(C.shape, dtype=np.complex128)
     
     # TODO: 迭代计算
@@ -70,7 +70,7 @@ def generate_julia(c, width=800, height=800, max_iter=100):
     # B = np.zeros(...)  # 记录迭代次数
     # Z = Z0.copy()  # 初始值为网格点
     Z0 = x[:, np.newaxis] + y[np.newaxis, :] * 1j
-    B = np.zeros(Z0.shape, dtype=int) # 记录迭代次数
+    B = np.zeros(Z0.shape, dtype=int) 
     Z = Z0.copy()
     # TODO: 迭代计算
     #for j in range(max_iter):
