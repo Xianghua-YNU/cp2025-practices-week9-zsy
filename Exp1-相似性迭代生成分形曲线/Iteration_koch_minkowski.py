@@ -20,11 +20,13 @@ def koch_generator(u, level):
     
     α = np.pi/3 
     current_points = u.copy()
+    
     for _ in range(level):
-        new_points = []  
+        new_points = [] 
         for i in range(len(current_points) - 1):
             a = current_points[i]
             b = current_points[i + 1]
+      
             p1 = a
             p2 = a + (b - a) / 3
             p3 = p2 + (b - a) / 3 * np.exp(1j * α)
@@ -59,11 +61,11 @@ def minkowski_generator(u, level):
     current_points = u.copy() 
 
     for _ in range(level):
-        new_points = []
+        new_points = [] 
         for i in range(len(current_points) - 1):
             a = current_points[i]
             b = current_points[i + 1]
-            
+
             p1 = a
             p2 = a + (b - a) / 4
             p3 = p2 + (b - a) / 4 * np.exp(1j * α)
@@ -78,6 +80,8 @@ def minkowski_generator(u, level):
             new_points.extend([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10])
         
         current_points = np.array(new_points)
+    
+    return current_points
 
 
 if __name__ == "__main__":
