@@ -14,9 +14,19 @@ def apply_rules(axiom, rules, iterations):
     :return: 经过多轮迭代后的最终字符串
     """
     # TODO: 实现L-System字符串生成逻辑
-    pass
+    
+    current_string = axiom
+    for _ in range(iterations):
+        new_string = ""
+        for char in current_string:
+            if char in rules:
+                new_string += rules[char]
+            else:
+                new_string += char
+        current_string = new_string
+    return current_string
 
-def draw_l_system(instructions, angle, step, start_pos=(0,0), start_angle=0, savefile=None):
+def draw_l_system(instructions, angle, step, start_pos=(0,0), start_angle=0, savefile=None, tree_mode=False):
     """
     根据L-System指令绘图
     :param instructions: 指令字符串（如"F+F--F+F"）
@@ -27,7 +37,51 @@ def draw_l_system(instructions, angle, step, start_pos=(0,0), start_angle=0, sav
     :param savefile: 若指定则保存为图片文件，否则直接显示
     """
     # TODO: 实现L-System绘图逻辑
-    pass
+   
+    x, y = start_pos
+    current_angle = start_angle
+    stack = []
+    fig, ax = plt.subplots()
+    ax.plot([x], [y], 'k,')  
+    
+    for char in instructions:
+        if char == 'F' or char == '0' or char == '1':
+            
+            rad = math.radians(current_angle)
+            nx = x + step * math.cos(rad)
+            ny = y + step * math.sin(rad)
+           
+            ax.plot([x, nx], [y, ny], 'k-')
+          
+            x, y = nx, ny
+        elif char == '+':
+         
+            current_angle += angle_deg
+        elif char == '-':
+          
+            current_angle -= angle_deg
+        elif char == '[':
+            
+            stack.append((x, y, current_angle))
+            current_angle += angle_deg  
+        elif char == ']':
+        
+            x, y, current_angle = stack.pop()
+            current_angle -= angle_deg  
+    
+  
+    ax.set_title('L-System Fractal')
+    ax.axis('equal')
+    ax.axis('off')
+    
+    if savefile:
+        plt.savefig(savefile, bbox_inches='tight')
+    else:
+        plt.show()
+    plt.close()
+
+
+
 
 if __name__ == "__main__":
     """
@@ -35,18 +89,21 @@ if __name__ == "__main__":
     学生可根据下方示例，调整参数体验不同分形效果
     """
     # 1. 生成并绘制科赫曲线
-    axiom = "F"  # 公理
-    rules = {"F": "F+F--F+F"}  # 规则
-    iterations = 3  # 迭代次数
-    angle = 60  # 每次转角
-    step = 10  # 步长
-    instr = apply_rules(axiom, rules, iterations)  # 生成指令字符串
-    draw_l_system(instr, angle, step, savefile="l_system_koch.png")  # 绘图并保存
+axiom = "F"  # 公理
+rules = {"F": "F+F--F+F"}  # 规则
+iterations = 3  # 迭代次数
+angle_deg = 60  # 每次转向角度
+step = 10  # 步长
+
+instr = apply_rules(axiom, rules, iterations)   
+draw_l_system(instr, angle_deg, step, savefile="l_system_koch.png")
 
     # 2. 生成并绘制分形二叉树
-    axiom = "0"
-    rules = {"1": "11", "0": "1[0]0"}
-    iterations = 5
-    angle = 45
-    instr = apply_rules(axiom, rules, iterations)
-    draw_l_system(instr, angle, step, savefile="fractal_tree.png")
+axiom = "0"
+rules = {"1": "11", "0": "1[0]0"}
+iterations = 5
+angle_deg = 45
+step = 10
+
+instr = apply_rules(axiom, rules, iterations)
+draw_l_system(instr, angle_deg, step, savefile="fractal_tree.png")

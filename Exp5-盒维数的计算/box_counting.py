@@ -30,7 +30,12 @@ def load_and_binarize_image(image_path, threshold=128):
     """
     # TODO: 实现图像加载和二值化
     # ... your code here ...
-    pass
+    image = Image.open(image_path).convert('L')
+  
+    image_array = np.array(image)
+   
+    binary_image = np.where(image_array > threshold, 1, 0)
+    return binary_image
 
 def box_count(binary_image, box_sizes):
     """
@@ -52,7 +57,34 @@ def box_count(binary_image, box_sizes):
     """
     # TODO: 实现盒计数算法
     # ... your code here ...
-    pass
+    box_counts = {}
+    height, width = binary_image.shape
+    
+    for box_size in box_sizes:
+        
+        rows = (height + box_size - 1) // box_size
+        cols = (width + box_size - 1) // box_size
+        
+        count = 0
+     
+        for i in range(rows):
+            for j in range(cols):
+                
+                row_start = i * box_size
+                row_end = min((i+1) * box_size, height)
+                col_start = j * box_size
+                col_end = min((j+1) * box_size, width)
+                
+               
+                box_region = binary_image[row_start:row_end, col_start:col_end]
+                
+               
+                if np.any(box_region == 1):
+                    count += 1
+        
+        box_counts[box_size] = count
+    
+    return box_counts
 
 def calculate_fractal_dimension(binary_image, min_box_size=1, max_box_size=None, num_sizes=10):
     """
@@ -75,7 +107,36 @@ def calculate_fractal_dimension(binary_image, min_box_size=1, max_box_size=None,
     """
     # TODO: 实现分形维数计算
     # ... your code here ...
-    pass
+    height, width = binary_image.shape
+    max_size = min(height, width) // 2 if max_box_size is None else max_box_size
+    
+   
+    ratio = (max_size / min_box_size) ** (1 / (num_sizes - 1))
+    box_sizes = [int(min_box_size * (ratio ** i)) for i in range(num_sizes)]
+    
+   
+    box_sizes = list(set(box_sizes))
+    box_sizes.sort()
+    box_sizes = [size for size in box_sizes if size <= max_size]
+    
+ 
+    box_counts = box_count(binary_image, box_sizes)
+    
+   
+    epsilons = list(box_counts.keys())
+    N_epsilons = list(box_counts.values())
+    
+ 
+    log_eps = np.log(epsilons)
+    log_N = np.log(N_epsilons)
+    
+   
+    slope, intercept = np.polyfit(log_eps, log_N, 1)
+    
+ 
+    D = -slope
+    
+    return D, (epsilons, N_epsilons, slope, intercept)
 
 def plot_log_log(epsilons, N_epsilons, slope, intercept, save_path=None):
     """
@@ -96,7 +157,30 @@ def plot_log_log(epsilons, N_epsilons, slope, intercept, save_path=None):
     """
     # TODO: 实现log-log图绘制
     # ... your code here ...
-    pass
+    log_eps = np.log(epsilons)
+    log_N = np.log(N_epsilons)
+    
+    
+    plt.figure(figsize=(10, 6))
+    plt.scatter(log_eps, log_N, color='blue', label='数据点')
+    
+    
+    x_line = np.linspace(min(log_eps), max(log_eps), 100)
+    y_line = slope * x_line + intercept
+    plt.plot(x_line, y_line, color='red', linestyle='--', label=f'拟合直线 (斜率 = {slope:.4f})')
+    
+
+    plt.xlabel('log(ε)')
+    plt.ylabel('log(N(ε))')
+    plt.title('Fractal dimension calculation - log-log 图')
+    plt.legend()
+    plt.grid(True)
+    
+    
+    if save_path:
+        plt.savefig( "./results/log_log_plot.png")
+    
+    plt.show()
 
 if __name__ == "__main__":
     """

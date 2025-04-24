@@ -7,7 +7,20 @@ def get_fern_params():
     每个变换包含6个参数(a,b,c,d,e,f)和概率p
     """
     # TODO: 实现巴恩斯利蕨的参数
-    pass
+    fern_params = [
+        
+        [0.00, 0.00, 0.00, 0.16, 0.00, 0.00, 0.01],
+        
+     
+        [0.85, 0.04, -0.04, 0.85, 0.00, 1.60, 0.85],
+        
+      
+        [0.20, -0.26, 0.23, 0.22, 0.00, 1.60, 0.07],
+        
+    
+        [-0.15, 0.28, 0.26, 0.24, 0.00, 0.44, 0.07]
+    ]
+    return fern_params
 
 def get_tree_params():
     """
@@ -15,7 +28,17 @@ def get_tree_params():
     每个变换包含6个参数(a,b,c,d,e,f)和概率p
     """
     # TODO: 实现概率树的参数 
-    pass
+    tree_params = [
+       
+        [0.00, 0.00, 0.00, 0.50, 0.00, 0.00, 0.1],
+        
+      
+        [0.42, -0.42, 0.42, 0.42, 0.00, 0.20, 0.45],
+        
+    
+        [-0.42, 0.42, 0.42, 0.42, 0.00, 0.20, 0.45]
+    ]
+    return tree_params
 
 def apply_transform(point, params):
     """
@@ -25,7 +48,13 @@ def apply_transform(point, params):
     :return: 变换后的新坐标(x',y')
     """
     # TODO: 实现变换公式
-    pass
+    x, y = point
+    a, b, c, d, e, f, p = params
+    
+    new_x = a * x + b * y + e
+    new_y = c * x + d * y + f
+    
+    return (new_x, new_y)
 
 def run_ifs(ifs_params, num_points=100000, num_skip=100):
     """
@@ -36,7 +65,37 @@ def run_ifs(ifs_params, num_points=100000, num_skip=100):
     :return: 生成的点坐标数组
     """
     # TODO: 实现混沌游戏算法
-    pass
+    current_point = (0.0, 0.0)
+    
+   
+    points = []
+    
+   
+    probs = np.array([p for a, b, c, d, e, f, p in ifs_params])
+    cum_probs = np.cumsum(probs)
+    
+    for i in range(num_points + num_skip):
+       
+        r = np.random.random()
+        selected_index = 0
+        for j, cp in enumerate(cum_probs):
+            if r <= cp:
+                selected_index = j
+                break
+        
+        selected_transform = ifs_params[selected_index]
+        
+       
+        current_point = apply_transform(current_point, selected_transform)
+        
+      
+        if i >= num_skip:
+            points.append(current_point)
+    
+   
+    points = np.array(points)
+    return points
+    
 
 def plot_ifs(points, title="IFS Fractal"):
     """
@@ -45,7 +104,23 @@ def plot_ifs(points, title="IFS Fractal"):
     :param title: 图像标题
     """
     # TODO: 实现分形绘制
-    pass
+    plt.figure(figsize=(10, 10))
+    
+  
+    plt.scatter(points[:,0], points[:,1], s=0.1, alpha=0.8, c='green')
+    
+    plt.title(title)
+    plt.xlabel('X')
+    plt.ylabel('Y')
+    plt.axis('equal')
+    plt.axis('off')
+    
+    # 保存图像
+    if filename:
+        plt.savefig(filename, dpi=300, bbox_inches='tight')
+    
+    # 显示图像
+    plt.show()
 
 if __name__ == "__main__":
     # 生成并绘制巴恩斯利蕨
