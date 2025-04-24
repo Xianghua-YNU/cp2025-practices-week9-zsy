@@ -89,19 +89,20 @@ if __name__ == "__main__":
     """
     # 1. 生成并绘制科赫曲线
     axiom = "F"  # 公理
-    rules = {"F": "F+F--F+F"}  # 规则
-    iterations = 3  # 迭代次数
-    angle = 60  # 每次转角
-    step = 10  # 步长
-    instr = apply_rules(axiom, rules, iterations)  # 生成指令字符串
-    draw_l_system(instr, angle, step, savefile="l_system_koch.png")  # 绘图并保存
+rules = {"F": "F+F--F+F"}  # 规则
+iterations = 3  # 迭代次数
+angle_deg = 60  # 每次转向角度
+step = 10  # 步长
+
+instr = apply_rules(axiom, rules, iterations)   
+draw_l_system(instr, angle_deg, step, savefile="l_system_koch.png")
 
     # 2. 生成并绘制分形二叉树
-    axiom = "0"
-    rules = {"1": "11", "0": "1[0]0"}
-    iterations = 5
-    angle = 45
-    step = 10
-    
-    instr = apply_rules(axiom, rules, iterations)
-    draw_l_system(instr, angle, step, savefile="fractal_tree.png")
+axiom = "0"
+rules = {"1": "11", "0": "1[0]0"}
+iterations = 5
+angle_deg = 45
+step = 10
+
+instr = apply_rules(axiom, rules, iterations)
+draw_l_system(instr, angle_deg, step, savefile="fractal_tree.png")
