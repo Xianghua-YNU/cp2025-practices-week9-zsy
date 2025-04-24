@@ -8,16 +8,16 @@ def get_fern_params():
     """
     # TODO: 实现巴恩斯利蕨的参数
     fern_params = [
-        # T1 (Stem)
+        
         [0.00, 0.00, 0.00, 0.16, 0.00, 0.00, 0.01],
         
-        # T2 (Successively smaller leaflets)
+     
         [0.85, 0.04, -0.04, 0.85, 0.00, 1.60, 0.85],
         
-        # T3 (Largest left-hand leaflet)
+      
         [0.20, -0.26, 0.23, 0.22, 0.00, 1.60, 0.07],
         
-        # T4 (Largest right-hand leaflet)
+    
         [-0.15, 0.28, 0.26, 0.24, 0.00, 0.44, 0.07]
     ]
     return fern_params
@@ -29,13 +29,13 @@ def get_tree_params():
     """
     # TODO: 实现概率树的参数 
     tree_params = [
-        # T1 (Trunk/Base scaling)
+       
         [0.00, 0.00, 0.00, 0.50, 0.00, 0.00, 0.1],
         
-        # T2 (Left Branch)
+      
         [0.42, -0.42, 0.42, 0.42, 0.00, 0.20, 0.45],
         
-        # T3 (Right Branch)
+    
         [-0.42, 0.42, 0.42, 0.42, 0.00, 0.20, 0.45]
     ]
     return tree_params
@@ -67,16 +67,15 @@ def run_ifs(ifs_params, num_points=100000, num_skip=100):
     # TODO: 实现混沌游戏算法
     current_point = (0.0, 0.0)
     
-    # 初始化一个数组来存储点坐标
+   
     points = []
     
-    # 计算概率累积和以便随机选择变换
+   
     probs = np.array([p for a, b, c, d, e, f, p in ifs_params])
     cum_probs = np.cumsum(probs)
     
-    # 生成点集
     for i in range(num_points + num_skip):
-        # 随机选择一个变换
+       
         r = np.random.random()
         selected_index = 0
         for j, cp in enumerate(cum_probs):
@@ -86,14 +85,14 @@ def run_ifs(ifs_params, num_points=100000, num_skip=100):
         
         selected_transform = ifs_params[selected_index]
         
-        # 应用所选变换
+       
         current_point = apply_transform(current_point, selected_transform)
         
-        # 如果迭代次数大于跳过数，就存储点
+      
         if i >= num_skip:
             points.append(current_point)
     
-    # 转换为numpy数组
+   
     points = np.array(points)
     return points
     
@@ -107,10 +106,9 @@ def plot_ifs(points, title="IFS Fractal"):
     # TODO: 实现分形绘制
     plt.figure(figsize=(10, 10))
     
-    # 绘制散点图
+  
     plt.scatter(points[:,0], points[:,1], s=0.1, alpha=0.8, c='green')
     
-    # 设置标题和坐标轴
     plt.title(title)
     plt.xlabel('X')
     plt.ylabel('Y')
