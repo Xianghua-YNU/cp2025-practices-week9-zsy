@@ -14,6 +14,7 @@ def apply_rules(axiom, rules, iterations):
     :return: 经过多轮迭代后的最终字符串
     """
     # TODO: 实现L-System字符串生成逻辑
+    
     current_string = axiom
     for _ in range(iterations):
         new_string = ""
