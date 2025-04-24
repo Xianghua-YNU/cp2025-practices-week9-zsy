@@ -21,12 +21,16 @@ def koch_generator(u, level):
         c = a + (b - a) / 3
         d = c + (b - a) * np.exp(1j * np.pi / 3) / 3
         e = a + 2 * (b - a) / 3
-        new_points = np.array([a, c, d, e, b])
+        
         return np.concatenate([
-            koch_generator(new_points[:2], level-1),
-            koch_generator(new_points[1:3], level-1),
-            koch_generator(new_points[2:4], level-1),
-            koch_generator(new_points[3:], level-1)
+            koch_generator(new_points[:1], level-1),
+            new_points[1:2],
+            koch_generator(new_points[1:2], level-1),
+            new_points[2:3],
+            koch_generator(new_points[2:3], level-1),
+            new_points[3:4],
+            koch_generator(new_points[3:4], level-1),
+            new_points[4:]
         ])
         
 def minkowski_generator(u, level):
@@ -72,9 +76,10 @@ def minkowski_generator(u, level):
             new_points[6:8],
             new_points[7:9]
         ]
-        result = []
+        result = [new_points[0]]
         for seg in segments:
             result.append(minkowski_generator(seg, level-1))
+            result.append(seg[1])
         return np.concatenate(result)
 
 if __name__ == "__main__":
