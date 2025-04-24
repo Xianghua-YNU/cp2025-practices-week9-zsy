@@ -42,33 +42,34 @@ def draw_l_system(instructions, angle, step, start_pos=(0,0), start_angle=0, sav
     current_angle = start_angle
     stack = []
     fig, ax = plt.subplots()
-    ax.plot([x], [y], 'k,')  
+    ax.plot([x], [y], 'k,')  # 起点
     
     for char in instructions:
         if char == 'F' or char == '0' or char == '1':
-           
+            # 计算下一个点
             rad = math.radians(current_angle)
             nx = x + step * math.cos(rad)
             ny = y + step * math.sin(rad)
-            
+            # 绘制线段
             ax.plot([x, nx], [y, ny], 'k-')
-            
+            # 更新当前位置
             x, y = nx, ny
         elif char == '+':
-            
+            # 向左转
             current_angle += angle_deg
         elif char == '-':
-           
+            # 向右转
             current_angle -= angle_deg
         elif char == '[':
-            
+            # 压栈（保存当前状态并左转）
             stack.append((x, y, current_angle))
-            current_angle += angle_deg  
+            current_angle += angle_deg  # 根据规则应用左转
         elif char == ']':
-           
+            # 出栈（恢复状态并右转）
             x, y, current_angle = stack.pop()
-            current_angle -= angle_deg  
+            current_angle -= angle_deg  # 根据规则应用右转
     
+    # 设置图形属性
     ax.set_title('L-System Fractal')
     ax.axis('equal')
     ax.axis('off')
@@ -78,6 +79,7 @@ def draw_l_system(instructions, angle, step, start_pos=(0,0), start_angle=0, sav
     else:
         plt.show()
     plt.close()
+
 
 
 if __name__ == "__main__":
@@ -99,5 +101,7 @@ if __name__ == "__main__":
     rules = {"1": "11", "0": "1[0]0"}
     iterations = 5
     angle = 45
+    step = 10
+    
     instr = apply_rules(axiom, rules, iterations)
     draw_l_system(instr, angle, step, savefile="fractal_tree.png")
