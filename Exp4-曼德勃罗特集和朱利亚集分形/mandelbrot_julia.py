@@ -43,7 +43,7 @@ def generate_mandelbrot(width=800, height=800, max_iter=100):
         B += mask
         Z[mask] = Z[mask]**2 + C[mask]
     # TODO: 返回转置后的结果
-    return B.T
+    return B
 
 def generate_julia(c, width=800, height=800, max_iter=100):
     """
@@ -70,20 +70,20 @@ def generate_julia(c, width=800, height=800, max_iter=100):
     # B = np.zeros(...)  # 记录迭代次数
     # Z = Z0.copy()  # 初始值为网格点
     Z0 = x[:, np.newaxis] + y[np.newaxis, :] * 1j
-    B = np.zeros(Z0.shape, dtype=int)  # 记录迭代次数
+    B = np.zeros(Z0.shape, dtype=int) # 记录迭代次数
     Z = Z0.copy()
     # TODO: 迭代计算
-    # for j in range(max_iter):
-    #     mask = np.abs(Z) <= 2
-    #     B += mask
-    #     Z[mask] = Z[mask]**2 + c
+    #for j in range(max_iter):
+    #   mask = np.abs(Z) <= 2
+    #  B += mask
+    #  Z[mask] = Z[mask]**2 + c
     for j in range(max_iter):
         mask = np.abs(Z) <= 2
         B += mask
         Z[mask] = Z[mask]**2 + c
     
     # TODO: 返回转置后的结果
-    return B.T
+    return B
 
 def plot_fractal(data, title, filename=None, cmap='magma'):
     """
