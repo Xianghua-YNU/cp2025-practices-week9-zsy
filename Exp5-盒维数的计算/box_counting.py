@@ -31,9 +31,9 @@ def load_and_binarize_image(image_path, threshold=128):
     # TODO: 实现图像加载和二值化
     # ... your code here ...
     image = Image.open(image_path).convert('L')
-    # 转换为 NumPy 数组
+  
     image_array = np.array(image)
-    # 二值化处理
+   
     binary_image = np.where(image_array > threshold, 1, 0)
     return binary_image
 
@@ -61,24 +61,24 @@ def box_count(binary_image, box_sizes):
     height, width = binary_image.shape
     
     for box_size in box_sizes:
-        # 计算网格行列数
+        
         rows = (height + box_size - 1) // box_size
         cols = (width + box_size - 1) // box_size
         
         count = 0
-        # 遍历所有盒子区域
+     
         for i in range(rows):
             for j in range(cols):
-                # 确定盒子在图像中的范围
+                
                 row_start = i * box_size
                 row_end = min((i+1) * box_size, height)
                 col_start = j * box_size
                 col_end = min((j+1) * box_size, width)
                 
-                # 提取盒子区域
+               
                 box_region = binary_image[row_start:row_end, col_start:col_end]
                 
-                # 检查盒子是否包含前景像素
+               
                 if np.any(box_region == 1):
                     count += 1
         
@@ -110,30 +110,30 @@ def calculate_fractal_dimension(binary_image, min_box_size=1, max_box_size=None,
     height, width = binary_image.shape
     max_size = min(height, width) // 2 if max_box_size is None else max_box_size
     
-    # 生成等比序列的盒子尺寸
+   
     ratio = (max_size / min_box_size) ** (1 / (num_sizes - 1))
     box_sizes = [int(min_box_size * (ratio ** i)) for i in range(num_sizes)]
     
-    # 去重并确保盒子尺寸有效
+   
     box_sizes = list(set(box_sizes))
     box_sizes.sort()
     box_sizes = [size for size in box_sizes if size <= max_size]
     
-    # 调用 box_count 获取计数结果
+ 
     box_counts = box_count(binary_image, box_sizes)
     
-    # 提取 epsilon 和 N_epsilon
+   
     epsilons = list(box_counts.keys())
     N_epsilons = list(box_counts.values())
     
-    # 对结果进行对数变换
+ 
     log_eps = np.log(epsilons)
     log_N = np.log(N_epsilons)
     
-    # 使用线性回归计算斜率
+   
     slope, intercept = np.polyfit(log_eps, log_N, 1)
     
-    # 计算盒维数 D
+ 
     D = -slope
     
     return D, (epsilons, N_epsilons, slope, intercept)
@@ -160,25 +160,25 @@ def plot_log_log(epsilons, N_epsilons, slope, intercept, save_path=None):
     log_eps = np.log(epsilons)
     log_N = np.log(N_epsilons)
     
-    # 绘制散点图
+    
     plt.figure(figsize=(10, 6))
     plt.scatter(log_eps, log_N, color='blue', label='数据点')
     
-    # 绘制拟合直线
+    
     x_line = np.linspace(min(log_eps), max(log_eps), 100)
     y_line = slope * x_line + intercept
     plt.plot(x_line, y_line, color='red', linestyle='--', label=f'拟合直线 (斜率 = {slope:.4f})')
     
-    # 添加标注和图例
+
     plt.xlabel('log(ε)')
     plt.ylabel('log(N(ε))')
-    plt.title('分形维数计算 - log-log 图')
+    plt.title('Fractal dimension calculation - log-log 图')
     plt.legend()
     plt.grid(True)
     
-    # 保存图片
+    
     if save_path:
-        plt.savefig(save_path)
+        plt.savefig( "./results/log_log_plot.png")
     
     plt.show()
 
