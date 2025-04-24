@@ -27,7 +27,7 @@ def koch_generator(u, level):
             b = current_points[i + 1]
             p1 = a
             p2 = a + (b - a) / 3
-            p3 = p2 + (b - a) / 3 * np.exp(1j * alpha)
+            p3 = p2 + (b - a) / 3 * np.exp(1j * α)
             p4 = p3 + (b - a) / 3
             p5 = b
 
@@ -51,10 +51,10 @@ def minkowski_generator(u, level):
     # TODO: 实现闵可夫斯基香肠曲线生成算法
     u = np.array([0, 1]) 
     
-   if level <= 0:
+    if level <= 0:
         return u
     
-    alpha = np.pi / 2 
+    α = np.pi / 2 
 
     current_points = u.copy() 
 
@@ -66,7 +66,7 @@ def minkowski_generator(u, level):
             
             p1 = a
             p2 = a + (b - a) / 4
-            p3 = p2 + (b - a) / 4 * np.exp(1j * alpha)
+            p3 = p2 + (b - a) / 4 * np.exp(1j * α)
             p4 = p3 + (b - a) / 4 * (1 + 1j)
             p5 = a + (b - a) / 2 + (b - a) / 4 * 1j
             p6 = a + (b - a) / 2
