@@ -13,32 +13,24 @@ def koch_generator(u, level):
         numpy.ndarray: 生成的所有点（复数数组）
     """
     # TODO: 实现科赫曲线生成算法
-    if level == 0:
+     if level == 0:
         return u
     else:
-        a = u[0]
-        b = u[1]
-        delta = b - a
-        c = a + delta / 3
-        e = a + 2 * delta / 3
-        vec = delta / 3
-        d = c + vec * np.exp(1j * np.pi / 3)
+        a, b = u
+        c = a + (b - a) / 3
+        d = c + (b - a) * np.exp(1j * np.pi / 3) / 3
+        e = a + 2 * (b - a) / 3
         new_points = np.array([a, c, d, e, b])
-        
         segments = [
-            koch_generator(new_points[:2], level-1),
-            koch_generator(new_points[1:3], level-1),
-            koch_generator(new_points[2:4], level-1),
-            koch_generator(new_points[3:5], level-1)
+            new_points[:2],
+            new_points[1:3],
+            new_points[2:4],
+            new_points[3:5]
         ]
-        
-        combined = []
-        for i in range(len(segments)):
-            if i < len(segments) - 1:
-                combined.append(segments[i][:-1])
-            else:
-                combined.append(segments[i])
-        return np.concatenate(combined)
+        result = []
+        for seg in segments:
+            result.append(koch_generator(seg, level-1))
+        return np.concatenate(result)
         
 def minkowski_generator(u, level):
     """
@@ -55,8 +47,7 @@ def minkowski_generator(u, level):
     if level == 0:
         return u
     else:
-        a = u[0]
-        b = u[1]
+        a, b = u
         length = np.abs(b - a)
         angle = np.angle(b - a)
         step = length / 8
@@ -69,25 +60,22 @@ def minkowski_generator(u, level):
             a + 5 * step * np.exp(1j * angle),
             a + 6 * step * np.exp(1j * angle),
             a + 7 * step * np.exp(1j * angle),
+            a + 8 * step * np.exp(1j * angle),
             b
         ])
-        
         segments = [
-            new_points[0:2],
+            new_points[:2],
             new_points[1:3],
             new_points[2:4],
             new_points[3:5],
             new_points[4:6],
             new_points[5:7],
             new_points[6:8],
-            new_points[7:9],
+            new_points[7:9]
         ]
-        
         result = []
         for seg in segments:
-            res = minkowski_generator(seg, level-1)
-            result.append(res[:-1])
-        result.append(res[-1:])  
+            result.append(minkowski_generator(seg, level-1))
         return np.concatenate(result)
 
 
@@ -99,11 +87,11 @@ if __name__ == "__main__":
     fig, axs = plt.subplots(2, 2, figsize=(10, 10))
     for i in range(4):
         koch_points = koch_generator(init_u, i)
-        ax = axs[i//2, i%2]
-        ax.plot(np.real(koch_points), np.imag(koch_points), 'k-', lw=1)
-        ax.set_title(f"Koch Curve Level {i+1}")
-        ax.axis('equal')
-        ax.axis('off')
+        row, col = i // 2, i % 2
+        axs[row, col].plot(np.real(koch_points), np.imag(koch_points), 'k-', lw=1)
+        axs[row, col].set_title(f"Koch Curve Level {i}")
+        axs[row, col].axis('equal')
+        axs[row, col].axis('off')
     plt.tight_layout()
     plt.savefig('koch_curve.png')
     plt.show()
@@ -112,13 +100,12 @@ if __name__ == "__main__":
     # 绘制不同层级的闵可夫斯基香肠曲线
     fig, axs = plt.subplots(2, 2, figsize=(10, 10))
     for i in range(4):
-        # TODO: 调用minkowski_generator生成点
         minkowski_points = minkowski_generator(init_u, i)
-        ax = axs[i//2, i%2]
-        ax.plot(np.real(minkowski_points), np.imag(minkowski_points), 'k-', lw=1)
-        ax.set_title(f"Minkowski Sausage Level {i+1}")
-        ax.axis('equal')
-        ax.axis('off')
+        row, col = i // 2, i % 2
+        axs[row, col].plot(np.real(minkowski_points), np.imag(minkowski_points), 'k-', lw=1)
+        axs[row, col].set_title(f"Minkowski Sausage Level {i}")
+        axs[row, col].axis('equal')
+        axs[row, col].axis('off')
     plt.tight_layout()
     plt.savefig('minkowski_sausage.png')
     plt.show()
