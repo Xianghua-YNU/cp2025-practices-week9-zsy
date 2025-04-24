@@ -66,16 +66,28 @@ def run_ifs(ifs_params, num_points=100000, num_skip=100):
     """
     # TODO: 实现混沌游戏算法
     current_point = (0.0, 0.0)
+    
+    # 初始化一个数组来存储点坐标
     points = []
-    for _ in range(num_points + num_skip):
-        # 随机选择一个变换 (根据概率 p)
-        # 使用 numpy 的 random.choice 函数，它可以根据给定的概率分布随机选择一个索引
-        probabilities = [param[6] for param in ifs_params]
-        selected_transform = np.random.choice(ifs_params, p=probabilities)
+    
+    # 计算概率累积和以便随机选择变换
+    probs = np.array([p for a, b, c, d, e, f, p in ifs_params])
+    cum_probs = np.cumsum(probs)
+    
+    # 生成点集
+    for i in range(num_points + num_skip):
+        # 随机选择一个变换
+        r = np.random.random()
+        selected_index = 0
+        for j, cp in enumerate(cum_probs):
+            if r <= cp:
+                selected_index = j
+                break
         
-        # 应用选中的变换
+        selected_transform = ifs_params[selected_index]
+        
+        # 应用所选变换
         current_point = apply_transform(current_point, selected_transform)
-        current_point = current_point
         
         # 如果迭代次数大于跳过数，就存储点
         if i >= num_skip:
