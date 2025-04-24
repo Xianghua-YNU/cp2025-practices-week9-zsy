@@ -26,7 +26,7 @@ def apply_rules(axiom, rules, iterations):
         current_string = new_string
     return current_string
 
-def draw_l_system(instructions, angle, step, start_pos=(0,0), start_angle=0, savefile=None):
+def draw_l_system(instructions, angle, step, start_pos=(0,0), start_angle=0, savefile=None, tree_mode=False):
     """
     根据L-System指令绘图
     :param instructions: 指令字符串（如"F+F--F+F"）
@@ -79,6 +79,7 @@ def draw_l_system(instructions, angle, step, start_pos=(0,0), start_angle=0, sav
     else:
         plt.show()
     plt.close()
+
 
 
 
