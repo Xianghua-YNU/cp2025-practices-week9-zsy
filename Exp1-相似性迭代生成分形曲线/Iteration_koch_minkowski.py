@@ -67,7 +67,7 @@ def minkowski_generator(u, level):
             b = current_points[i + 1]
 
             p1 = a
-            p2 = a + (b - a) / 4
+            p2 = a + (b - a) / 4 
             p3 = p2 + (b - a) / 4 * np.exp(1j * α)
             p4 = p3 + (b - a) / 4 * (1 + 1j)
             p5 = a + (b - a) / 2 + (b - a) / 4 * 1j
