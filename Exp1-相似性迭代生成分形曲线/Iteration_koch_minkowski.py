@@ -22,14 +22,14 @@ def koch_generator(u, level):
     for _ in range(level):
         new_u = []
         for i in range(len(u)-1):
-            start = u[i]
-            end = u[i+1]
+            a = u[i]
+            b = u[i+1]
             
-            p1 = st
-            p2 = st + (end - st)/3
-            p3 = p2 + (end - st)/3 * np.exp(1j*α)
-            p4 = st + 2*(end - st)/3
-            p5 = end
+            p1 = a
+            p2 = a + (b - a)/3
+            p3 = p2 + (b - a)/3 * np.exp(1j*α)
+            p4 = a + 2*(b - a)/3
+            p5 = b
             
             new_u.extend([p1, p2, p3, p4, p5])
         
@@ -53,19 +53,19 @@ def minkowski_generator(u, level):
     for _ in range(level):
         new_u = []
         for i in range(len(u)-1):
-            start = u[i]
-            end = u[i+1]
+            a = u[i]
+            b = u[i+1]
             
-            p1 = st
-            p2 = st + (end - s)/4
-            p3 = p2 + (end - st)/4 * np.exp(1j*α)
-            p4 = p2 + (end - st)/4 * (1 + 1j)
-            p5 = st + (end - st)/2 + (end - st)/4 * 1j
-            p6 = st + (end - st)/2
-            p7 = st + (end - st)/2 - (end - st)/4 * 1j
-            p8 = st + 3*(end - st)/4 - (end - st)/4 * 1j
-            p9 = st + 3*(end - st)/4
-            p10 = end
+            p1 = a
+            p2 = a + (b - a)/4
+            p3 = p2 + (b - a)/4 * np.exp(1j*α)
+            p4 = p2 + (b - a)/4 * (1 + 1j)
+            p5 = a + (b - a)/2 + (end - a)/4 * 1j
+            p6 = a + (b - a)/2
+            p7 = a + (eb - a)/2 - (end - a)/4 * 1j
+            p8 = a + 3*(b - a)/4 - (end - a)/4 * 1j
+            p9 = a + 3*(b - a)/4
+            p10 = b
             
             new_u.extend([p1, p2, p3, p4, p5, p6, p7, p8, p9, p10])
         
