@@ -60,10 +60,10 @@ def minkowski_generator(u, level):
             p2 = a + (b - a)/4
             p3 = p2 + (b - a)/4 * np.exp(1j*α)
             p4 = p2 + (b - a)/4 * (1 + 1j)
-            p5 = a + (b - a)/2 + (end - a)/4 * 1j
+            p5 = a + (b - a)/2 + (b - a)/4 * 1j
             p6 = a + (b - a)/2
-            p7 = a + (eb - a)/2 - (end - a)/4 * 1j
-            p8 = a + 3*(b - a)/4 - (end - a)/4 * 1j
+            p7 = a + (b - a)/2 - (b - a)/4 * 1j
+            p8 = a + 3*(b - a)/4 - (b - a)/4 * 1j
             p9 = a + 3*(b - a)/4
             p10 = b
             
