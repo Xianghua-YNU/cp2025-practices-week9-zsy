@@ -22,7 +22,7 @@ def koch_generator(u, level):
         d = c + (b - a) * np.exp(1j * np.pi / 3) / 3
         e = a + 2 * (b - a) / 3
         new_points = np.array([a, c, d, e, b])
-        
+      
         return np.concatenate([
             koch_generator(new_points[:2], level-1),
             koch_generator(new_points[1:3], level-1),
@@ -45,6 +45,7 @@ def minkowski_generator(u, level):
     if level == 0:
         return u
     else:
+
         a = u[0]
         b = u[1]
         length = np.abs(b - a)
