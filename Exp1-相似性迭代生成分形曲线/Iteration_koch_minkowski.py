@@ -20,10 +20,11 @@ def koch_generator(u, level):
     
     α = np.pi/3 
     current_points = u.copy()
-    for i in range(len(current_points) - 1):
+    for _ in range(level):
+        new_points = []  
+        for i in range(len(current_points) - 1):
             a = current_points[i]
             b = current_points[i + 1]
-    
             p1 = a
             p2 = a + (b - a) / 3
             p3 = p2 + (b - a) / 3 * np.exp(1j * alpha)
